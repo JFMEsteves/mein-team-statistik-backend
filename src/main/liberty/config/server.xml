@@ -1,0 +1,32 @@
+<server description="BasketballBackend">
+    <featureManager>
+        <feature>jakartaee-9.0</feature>
+        <feature>servlet-5.0</feature>
+        <feature>cdi-3.0</feature>
+    </featureManager>
+
+    <variable name="default.http.port" defaultValue="9084"/>
+    <variable name="default.https.port" defaultValue="9444"/>
+    <variable name="app.context.root" defaultValue="/"/>
+
+    <!-- Datasource Configuration -->
+    <!-- tag::data-source[] -->
+
+    <httpEndpoint httpPort="${default.http.port}"
+                  httpsPort="${default.https.port}"
+                  id="defaultHttpEndpoint" 
+                  host="*" />
+    <webApplication id="BasketballBackend" location="BasketballBackend.war" contextRoot="/" />
+
+    <!-- Derby Library Configuration -->
+    <library id="derbyJDBCLib">
+      <fileset dir="${shared.resource.dir}/" includes="derby*.jar" />
+    </library>
+
+
+    <!-- Datasource Configuration -->
+    <dataSource id="DefaultDataSource">
+      <jdbcDriver libraryRef="derbyJDBCLib" />
+      <properties.derby.embedded databaseName="BasketballDB" createDatabase="create" />
+    </dataSource>
+</server>
