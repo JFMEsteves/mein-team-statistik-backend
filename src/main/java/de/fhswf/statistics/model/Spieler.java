@@ -25,7 +25,6 @@ public class Spieler implements Serializable {
     private String name;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "spieler", cascade = CascadeType.ALL, orphanRemoval = true)
-    // @JoinColumn(name = "fk_spieler")
     private List<SpielSpieler> stats = new ArrayList<>();
 
     public Spieler(int id, String name) {
@@ -53,16 +52,6 @@ public class Spieler implements Serializable {
         this.name = name;
     }
 
-    //TODO Nutzen überdenken | Nur nach SpielID oder SPielerID suchen macht mehr sinn ?
-    @NotNull
-    public SpielSpieler findStatsById(@NotNull int spielerId, @NotNull int spielId) {
-        for (SpielSpieler c : getStats()) {
-            if (c.equals(new SpielSpielerPK(spielerId, spielId)))
-                return c;
-        }
-
-        throw new IllegalArgumentException(String.format("No Game with ID '%s'!", id));
-    }
 
     public List<SpielSpieler> getStats() {
         if (this.stats == null) this.stats = new ArrayList<>();

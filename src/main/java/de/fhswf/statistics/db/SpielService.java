@@ -32,7 +32,11 @@ public class SpielService {
         CriteriaQuery<Spiel> criteriaQuery = criteriaBuilder.createQuery(Spiel.class);
         criteriaQuery.select(criteriaQuery.from(Spiel.class));
         TypedQuery<Spiel> query = em.createQuery(criteriaQuery);
-        return query.getResultList();
+        List<Spiel> resultList = query.getResultList();
+        resultList.stream().forEach(s -> {
+            em.refresh(s);
+        });
+        return resultList;
     }
     public Spiel update(@NotNull Spiel spiel){return em.merge(spiel);}
 

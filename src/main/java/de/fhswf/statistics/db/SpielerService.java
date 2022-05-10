@@ -32,7 +32,6 @@ public class SpielerService {
 
     @NotNull
     public List<Spieler> findAll() {
-
         CriteriaBuilder cB = em.getCriteriaBuilder();
         CriteriaQuery<Spieler> criteriaQuery = cB.createQuery(Spieler.class);
 
@@ -41,7 +40,13 @@ public class SpielerService {
         TypedQuery<Spieler> query = em.createQuery(criteriaQuery);
        // TypedQuery<Spieler> joinquery = em.createNamedQuery("Spieler.findAll", Spieler.class);
 
-        return query.getResultList();
+        List<Spieler> resultList = query.getResultList();
+        resultList.stream().forEach(s -> {
+            em.refresh(s);
+        });
+
+
+        return resultList;
        // return joinquery.getResultList();
     }
 

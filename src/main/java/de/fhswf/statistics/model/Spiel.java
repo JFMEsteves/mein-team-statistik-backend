@@ -26,22 +26,21 @@ public class Spiel implements Serializable {
 
     @Column(nullable = false, name = "Datum")
     private LocalDate datum;
-    @Column(nullable = true, name = "Name")
+    @Column(name = "Name")
     private String name;
 
 
     @Min(value = 0)
     @Max(value = 999)
-    @Column(nullable = true, name = "GegnerPunkte")
+    @Column(name = "GegnerPunkte")
     private int gegnerPunkte;
 
-    @Column(nullable = true, name = "UnserePunkte")
+    @Column(name = "UnserePunkte")
     @Min(value = 0)
     @Max(value = 999)
     private int unserePunkte;
 
     @OneToMany(mappedBy = "spiel", cascade = CascadeType.ALL, orphanRemoval = true)
-    //@JoinColumn(name = "fk_spiel",referencedColumnName = "spieldId")
     private List<SpielSpieler> stats = new ArrayList<>();
 
     public Spiel(int id, LocalDate datum) {
@@ -98,15 +97,6 @@ public class Spiel implements Serializable {
         return stats;
     }
 
-    //TODO Possibly nutzlos ? Überdenken
-    @NotNull
-    public SpielSpieler findStatsById(@NotNull int spielerId, @NotNull int spielId) {
-        for (SpielSpieler c : getStats()) {
-            if (c.equals(new SpielSpielerPK(spielerId, spielId)))
-                return c;
-        }
-        throw new IllegalArgumentException(String.format("No Game with ID '%s'!", id));
-    }
 
     public void setStats(List<SpielSpieler> stats) {
         this.stats = stats;
