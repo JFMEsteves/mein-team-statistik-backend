@@ -12,6 +12,9 @@ import jakarta.validation.constraints.NotNull;
 
 import java.util.List;
 
+/**
+ * Klasse für die Persistierung von Spiel.
+ */
 @Stateless
 public class SpielService {
     @PersistenceContext
@@ -21,11 +24,12 @@ public class SpielService {
     public Spiel findById(@NotNull int id) {
         Spiel spiel = em.find(Spiel.class, id);
 
-        if(spiel == null)
+        if (spiel == null)
             throw new RuntimeException(String.format("Can't find spieler with id '%s'!", id));
 
         return spiel;
     }
+
     @NotNull
     public List<Spiel> findAll() {
         CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
@@ -38,25 +42,18 @@ public class SpielService {
         });
         return resultList;
     }
-    public Spiel update(@NotNull Spiel spiel){return em.merge(spiel);}
+
+    public Spiel update(@NotNull Spiel spiel) {
+        return em.merge(spiel);
+    }
 
     public Spiel save(@NotNull Spiel spiel) {
         em.persist(spiel);
         return spiel;
     }
+
     public void remove(@NotNull Spiel spiel) {
         spiel = em.merge(spiel);
         em.remove(spiel);
-    }
-
-    public int getNewId() {
-        System.out.println("Beginne ID Search");
-        int id = 1;
-        List<Spiel> Ids = findAll();
-        for (Spiel c : Ids){
-            if(c.getId()>= id )id++;
-        }
-        System.out.println("Beende ID Search, ID :" + id + " gefunden.");
-        return id;
     }
 }

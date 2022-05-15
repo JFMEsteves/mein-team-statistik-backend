@@ -5,7 +5,7 @@ import de.fhswf.statistics.model.SpielSpielerPK;
 import jakarta.json.JsonObject;
 
 /**
- * Parser für einzelne Fragen.
+ * Parser für einzelne SpielSpieler Objekte.
  */
 public class StatParser implements ResponseParser<SpielSpieler> {
     @Override
@@ -14,8 +14,6 @@ public class StatParser implements ResponseParser<SpielSpieler> {
             //TODO Richtiger nutzen von getInt ? | Wie mit PK ID umgehen ?
             SpielSpielerPK spielSpielerPK = new SpielSpielerPK(data.getInt("spielerId"), data.getInt("spielId"));
             SpielSpieler stat = new SpielSpieler(spielSpielerPK);
-            //SpielSpieler stat = new SpielSpieler();
-            //stat.getSpielSpielerPK().setSpielerId(data.getInt("spielerId"));
             stat.setPunkte(data.getInt("punkte"));
             stat.setGeworfeneFreiwuerfe(data.getInt("geworfeneFreiwuerfe"));
             stat.setGetroffeneFreiwuerfe(data.getInt("getroffeneFreiwuerfe"));

@@ -35,27 +35,14 @@ public class AddSpielerServlet extends HttpServlet {
 
             //Parse Spiel
             Spieler spieler = new SpielerParser().parse(params.getJsonObject("spieler"));
-            // Get referenced survey
-            /*
-            String date = params.getString("datum");
-            Date datum = DateConverter.StringtoDate(date);
-            Spiel spiel = new Spiel (params.getInt("spielid"),datum);
-            spiel.setName(params.getString("name"));
-            spiel.setUnserePunkte(params.getInt("unserePunkte"));
-            spiel.setGegnerPunkte(params.getInt("gegnerPunkte"));
 
-
-
-
-            JsonArray responseArray = params.getJsonArray("results");
-            */
-            if(params.containsKey("update")){
+            if (params.containsKey("update")) {
                 Spieler current = spielerService.findById(params.getInt("update"));
                 spielerService.remove(current);
                 spieler.setId(current.getId());
             }
             spieler = spielerService.save(spieler);
-            // Update survey
+            // Update spieler
             spielerService.update(spieler);
 
             // Gebe das neue Spiel als Antwort zurück

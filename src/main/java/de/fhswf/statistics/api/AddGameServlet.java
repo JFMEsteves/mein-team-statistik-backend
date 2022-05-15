@@ -36,34 +36,17 @@ public class AddGameServlet extends HttpServlet {
             //Parse Spiel
             System.out.println("Start des Parsings");
             Spiel spiel = new SpielParser().parse(params.getJsonObject("spiel"));
-/*
-            int id = spielService.getNewId();
-            spiel.setId(id);
-            List<SpielSpieler> dummy = spiel.getStats();
-            for(SpielSpieler c : dummy){
-                c.getSpielSpielerPK().setSpielId(id);
-                System.out.println("Setting ID: " + id);
 
 
+            if (params.containsKey("update")) {
+                Spiel current = spielService.findById(params.getInt("update"));
+                spielService.remove(current);
+                spiel.setId(current.getId());
             }
 
- */
-            //System.out.println("Next Seq will be : " + spielService.getSeq_id());
-             if(params.containsKey("update")){
-                 Spiel current = spielService.findById(params.getInt("update"));
-                 spielService.remove(current);
-                 spiel.setId(current.getId());
-             }
 
-             //spiel.setStats(null);
-             spiel = spielService.save(spiel);
-            //spiel = spielService.update(spiel);
-            /*
-            int id = spiel.getId();
+            spiel = spielService.save(spiel);
 
-            //spiel.setStats(dummy);
-
-             */
             // Update survey
             spielService.update(spiel);
 

@@ -17,7 +17,8 @@ import java.util.Map;
  */
 public final class PrettyJson {
 
-    private PrettyJson() {}
+    private PrettyJson() {
+    }
 
     /**
      * Gebe das JSON-Objekt als formatierten String aus.

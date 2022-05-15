@@ -32,14 +32,14 @@ public class GetSpielServlet extends HttpServlet {
             // Parse request body
             JsonObject params = Json.createReader(req.getReader()).readObject();
             int id = params.getInt("id");
-            if(id == 0) {
+            if (id == 0) {
                 throw new ApiException("Parameter 'id' missing or empty!");
             }
 
             // Get spieler
             Spiel spiel = spielService.findById(id);
             ApiResponseWriter.writePositiveResponse(resp, spiel.toJson());
-        }catch (JsonException e) {
+        } catch (JsonException e) {
             ApiResponseWriter.writeNegativeResponse(resp, "Malformed request body!");
         } catch (ApiException e) {
             ApiResponseWriter.writeNegativeResponse(resp, e);

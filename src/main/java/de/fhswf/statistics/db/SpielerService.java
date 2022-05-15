@@ -24,7 +24,7 @@ public class SpielerService {
     public Spieler findById(@NotNull int id) {
         Spieler spieler = em.find(Spieler.class, id);
 
-        if(spieler == null)
+        if (spieler == null)
             throw new RuntimeException(String.format("Can't find spieler with id '%s'!", id));
 
         return spieler;
@@ -35,10 +35,9 @@ public class SpielerService {
         CriteriaBuilder cB = em.getCriteriaBuilder();
         CriteriaQuery<Spieler> criteriaQuery = cB.createQuery(Spieler.class);
 
-       criteriaQuery.select(criteriaQuery.from(Spieler.class));
+        criteriaQuery.select(criteriaQuery.from(Spieler.class));
 
         TypedQuery<Spieler> query = em.createQuery(criteriaQuery);
-       // TypedQuery<Spieler> joinquery = em.createNamedQuery("Spieler.findAll", Spieler.class);
 
         List<Spieler> resultList = query.getResultList();
         resultList.stream().forEach(s -> {
@@ -47,7 +46,6 @@ public class SpielerService {
 
 
         return resultList;
-       // return joinquery.getResultList();
     }
 
     public Spieler save(@NotNull Spieler spieler) {

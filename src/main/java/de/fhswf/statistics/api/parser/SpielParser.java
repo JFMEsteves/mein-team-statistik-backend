@@ -12,6 +12,11 @@ import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+/**
+ * Parser für ein einzelnes Spiel.
+ *
+ * @see StatParser Stats werden mit einem anderen Parser verarbeitet.
+ */
 public class SpielParser implements ResponseParser<Spiel> {
 
     @NotNull
@@ -25,11 +30,8 @@ public class SpielParser implements ResponseParser<Spiel> {
             e.printStackTrace();
         }
 
-       ;
+
         Spiel spiel = new Spiel(data.getInt("id"), date);
-       // Spiel spiel = new Spiel();
-       // spiel.setId(spielService.getNewId());
-        //spiel.setDatum(date);
         spiel.setName(data.getString("name"));
         spiel.setGegnerPunkte(data.getInt("gegnerPunkte"));
         spiel.setUnserePunkte(data.getInt("unserePunkte"));

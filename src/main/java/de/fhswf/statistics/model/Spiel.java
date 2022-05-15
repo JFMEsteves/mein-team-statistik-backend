@@ -20,8 +20,6 @@ import java.util.stream.Collectors;
 public class Spiel implements Serializable {
     @Id
     @Column(name = "spielId", nullable = false)
-   // @SequenceGenerator(name = "sequence", sequenceName = "jakarta_seq", allocationSize = 1)
-  //  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq")
     private int id;
 
     @Column(nullable = false, name = "Datum")

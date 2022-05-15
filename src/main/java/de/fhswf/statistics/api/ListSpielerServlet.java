@@ -27,7 +27,8 @@ public class ListSpielerServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        // List surveys
+
+        // List spieler
         JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
         spielerService.findAll().forEach(s -> arrayBuilder.add(s.toJson(true)));
 

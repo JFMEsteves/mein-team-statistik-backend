@@ -10,7 +10,7 @@ import jakarta.validation.constraints.NotNull;
 import java.util.ArrayList;
 
 /**
- * Parser für eine einzelnen Spieler.
+ * Parser für einen einzelnen Spieler.
  *
  * @see StatParser Stats werden mit einem anderen Parser verarbeitet.
  */
@@ -19,12 +19,9 @@ public class SpielerParser implements ResponseParser<Spieler> {
     @NotNull
     @Override
     public Spieler parse(@NotNull JsonObject data) throws ParsingException {
+        //Allgemeine Daten
         Spieler spieler = new Spieler(data.getInt("id"),
                 data.getString("name"));
-
-        // Allgemeine Daten
-        // spieler.setId(data.getInt("id"));
-        // spieler.setName(data.getString("name",""));
 
         // Fragen sind optional
         try {

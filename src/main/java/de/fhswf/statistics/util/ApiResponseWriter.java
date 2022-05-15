@@ -13,13 +13,14 @@ import java.io.IOException;
  */
 public final class ApiResponseWriter {
 
-    private ApiResponseWriter() {}
+    private ApiResponseWriter() {
+    }
 
     public static void writePositiveResponse(@NotNull HttpServletResponse response, JsonObject data)
             throws IOException {
         JsonObjectBuilder result = Json.createObjectBuilder();
         result.add("ok", true);
-        if(data != null) result.add("data", data);
+        if (data != null) result.add("data", data);
         response.getWriter().write(PrettyJson.printObject(result.build()));
     }
 
