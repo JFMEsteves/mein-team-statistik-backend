@@ -25,7 +25,7 @@ public class SpielService {
         Spiel spiel = em.find(Spiel.class, id);
 
         if (spiel == null)
-            throw new RuntimeException(String.format("Can't find spieler with id '%s'!", id));
+            throw new RuntimeException(String.format("Can't find spiel with id '%s'!", id));
 
         return spiel;
     }

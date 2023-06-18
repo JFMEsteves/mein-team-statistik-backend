@@ -77,7 +77,7 @@ public class Spieler implements Serializable {
         if (getStats() != null && includeStats) {
             getStats().stream()
                     .collect(Collectors.toList())
-                    .forEach(q -> statsArray.add(q.toJson()));
+                    .forEach(q -> statsArray.add(q.toJson(true,false)));
         }
         return Json.createObjectBuilder()
                 .add("id", getId())

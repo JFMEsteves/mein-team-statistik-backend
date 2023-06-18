@@ -27,16 +27,54 @@ public class Spiel implements Serializable {
     @Column(name = "Name")
     private String name;
 
-
+    @Column(name = "UnserePunkte")
+    @Min(value = 0)
+    @Max(value = 999)
+    private int unserePunkte;
     @Min(value = 0)
     @Max(value = 999)
     @Column(name = "GegnerPunkte")
     private int gegnerPunkte;
 
-    @Column(name = "UnserePunkte")
+    //Viertel Punkte eigenes Team
     @Min(value = 0)
-    @Max(value = 999)
-    private int unserePunkte;
+    @Max(value = 50)
+    @Column(name = "ErstesViertelTeam")
+    private int erstesViertelTeam;
+    @Min(value = 0)
+    @Max(value = 50)
+    @Column(name = "ZweitesViertelTeam")
+    private int zweitesViertelTeam;
+    @Min(value = 0)
+    @Max(value = 50)
+    @Column(name = "DrittesViertelTeam")
+    private int drittesViertelTeam;
+
+    @Min(value = 0)
+    @Max(value = 50)
+    @Column(name = "ViertesViertelTeam")
+    private int viertesViertelTeam;
+
+    //Viertel Punkte Gegner
+    @Min(value = 0)
+    @Max(value = 50)
+    @Column(name = "ErstesViertelGegner")
+    private int erstesViertelGegner;
+
+
+    @Min(value = 0)
+    @Max(value = 50)
+    @Column(name = "ZweitesViertelGegner")
+    private int zweitesViertelGegner;
+    @Min(value = 0)
+    @Max(value = 50)
+    @Column(name = "DrittesViertelGegner")
+    private int drittesViertelGegner;
+    @Min(value = 0)
+    @Max(value = 50)
+    @Column(name = "ViertesViertelGegner")
+    private int viertesViertelGegner;
+
 
     @OneToMany(mappedBy = "spiel", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SpielSpieler> stats = new ArrayList<>();
@@ -90,6 +128,71 @@ public class Spiel implements Serializable {
         this.unserePunkte = unserePunkte;
     }
 
+    public int getErstesViertelTeam() {
+        return erstesViertelTeam;
+    }
+
+    public void setErstesViertelTeam(int erstesViertelTeam) {
+        this.erstesViertelTeam = erstesViertelTeam;
+    }
+
+    public int getZweitesViertelTeam() {
+        return zweitesViertelTeam;
+    }
+
+    public void setZweitesViertelTeam(int zweitesViertelTeam) {
+        this.zweitesViertelTeam = zweitesViertelTeam;
+    }
+
+    public int getDrittesViertelTeam() {
+        return drittesViertelTeam;
+    }
+
+    public void setDrittesViertelTeam(int drittesViertelTeam) {
+        this.drittesViertelTeam = drittesViertelTeam;
+    }
+
+    public int getViertesViertelTeam() {
+        return viertesViertelTeam;
+    }
+
+    public void setViertesViertelTeam(int viertesViertelTeam) {
+        this.viertesViertelTeam = viertesViertelTeam;
+    }
+
+    public int getErstesViertelGegner() {
+        return erstesViertelGegner;
+    }
+
+    public void setErstesViertelGegner(int erstesViertelGegner) {
+        this.erstesViertelGegner = erstesViertelGegner;
+    }
+
+    public int getZweitesViertelGegner() {
+        return zweitesViertelGegner;
+    }
+
+    public void setZweitesViertelGegner(int zweitesViertelGegner) {
+        this.zweitesViertelGegner = zweitesViertelGegner;
+    }
+
+    public int getDrittesViertelGegner() {
+        return drittesViertelGegner;
+    }
+
+    public void setDrittesViertelGegner(int drittesViertelGegner) {
+        this.drittesViertelGegner = drittesViertelGegner;
+    }
+
+    public int getViertesViertelGegner() {
+        return viertesViertelGegner;
+    }
+
+    public void setViertesViertelGegner(int viertesViertelGegner) {
+        this.viertesViertelGegner = viertesViertelGegner;
+    }
+
+
     public List<SpielSpieler> getStats() {
         if (this.stats == null) this.stats = new ArrayList<>();
         return stats;
@@ -113,7 +216,7 @@ public class Spiel implements Serializable {
         if (getStats() != null && includeStats) {
             getStats().stream()
                     .collect(Collectors.toList())
-                    .forEach(q -> statsArray.add(q.toJson()));
+                    .forEach(q -> statsArray.add(q.toJson(false, true)));
         }
         //Aussehen der JSON Datei
         return Json.createObjectBuilder()
@@ -122,6 +225,14 @@ public class Spiel implements Serializable {
                 .add("datum", DateConverter.DateToString(getDatum()))
                 .add("unserePunkte", getUnserePunkte())
                 .add("gegnerPunkte", getGegnerPunkte())
+                .add("erstesViertelTeam", getErstesViertelTeam())
+                .add("zweitesViertelTeam", getZweitesViertelTeam())
+                .add("drittesViertelTeam", getDrittesViertelTeam())
+                .add("viertesViertelTeam", getViertesViertelTeam())
+                .add("erstesViertelGegner",getErstesViertelGegner())
+                .add("zweitesViertelGegner",getZweitesViertelGegner())
+                .add("drittesViertelGegner",getDrittesViertelGegner())
+                .add("viertesViertelGegner",getViertesViertelGegner())
                 .add("stats", statsArray)
                 .build();
     }

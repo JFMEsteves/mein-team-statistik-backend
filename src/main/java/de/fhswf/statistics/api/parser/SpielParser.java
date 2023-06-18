@@ -35,6 +35,14 @@ public class SpielParser implements ResponseParser<Spiel> {
         spiel.setName(data.getString("name"));
         spiel.setGegnerPunkte(data.getInt("gegnerPunkte"));
         spiel.setUnserePunkte(data.getInt("unserePunkte"));
+        spiel.setErstesViertelTeam(data.getInt("erstesViertelTeam"));
+        spiel.setZweitesViertelTeam(data.getInt("zweitesViertelTeam"));
+        spiel.setDrittesViertelTeam(data.getInt("drittesViertelTeam"));
+        spiel.setViertesViertelTeam(data.getInt("viertesViertelTeam"));
+        spiel.setErstesViertelGegner(data.getInt("erstesViertelGegner"));
+        spiel.setZweitesViertelGegner(data.getInt("zweitesViertelGegner"));
+        spiel.setDrittesViertelGegner(data.getInt("drittesViertelGegner"));
+        spiel.setViertesViertelGegner(data.getInt("viertesViertelGegner"));
 
 
         try {

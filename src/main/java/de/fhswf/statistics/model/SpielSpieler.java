@@ -2,6 +2,7 @@ package de.fhswf.statistics.model;
 
 import jakarta.json.Json;
 import jakarta.json.JsonObject;
+import jakarta.json.JsonObjectBuilder;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -150,7 +151,19 @@ public class SpielSpieler implements Serializable {
      * @return (Jakarta) {@link JsonObject}.
      */
     @NotNull
-    public JsonObject toJson() {
+    public JsonObject toJson(boolean includeSpiel, boolean includeSpieler) {
+        JsonObjectBuilder spielerObject = Json.createObjectBuilder();
+        JsonObjectBuilder spielObject = Json.createObjectBuilder();
+        if(getSpiel() != null && includeSpiel){
+           spielObject.add("id",getSpiel().getId())
+                   .add("name",getSpiel().getName());
+
+        }
+        if(getSpieler() != null && includeSpieler){
+            spielerObject.add("id",getSpieler().getId())
+                    .add("name",getSpieler().getName());
+        }
+
         return Json.createObjectBuilder()
                 .add("spielerId", getSpielSpielerPK().getSpielerId())
                 .add("spielId", getSpielSpielerPK().getSpielId())
@@ -159,6 +172,8 @@ public class SpielSpieler implements Serializable {
                 .add("getroffeneFreiwuerfe", getGetroffeneFreiwuerfe())
                 .add("dreiPunkteTreffer", getDreiPunkteTreffer())
                 .add("fouls", getFouls())
+                .add("spiel",spielObject)
+                .add("spieler",spielerObject)
                 .build();
     }
 }
