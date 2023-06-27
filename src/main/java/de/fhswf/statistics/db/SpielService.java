@@ -37,9 +37,7 @@ public class SpielService {
         criteriaQuery.select(criteriaQuery.from(Spiel.class));
         TypedQuery<Spiel> query = em.createQuery(criteriaQuery);
         List<Spiel> resultList = query.getResultList();
-        resultList.stream().forEach(s -> {
-            em.refresh(s);
-        });
+        resultList.stream().forEach(s -> em.refresh(s));
         return resultList;
     }
 

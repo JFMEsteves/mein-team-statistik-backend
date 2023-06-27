@@ -7,7 +7,8 @@ import jakarta.json.JsonException;
 import jakarta.json.JsonObject;
 import jakarta.validation.constraints.NotNull;
 
-import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
  * Parser für einen einzelnen Spieler.
@@ -27,7 +28,7 @@ public class SpielerParser implements ResponseParser<Spieler> {
         try {
             JsonArray array = data.getJsonArray("stats");
 
-            ArrayList<SpielSpieler> stats = new ArrayList<>();
+            Set<SpielSpieler> stats = new LinkedHashSet<>();
             StatParser parser = new StatParser();
 
             for (int i = 0; i < array.size(); i++) {

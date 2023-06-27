@@ -8,12 +8,12 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 
-import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
 @Table(name = "SpielSpieler")
-public class SpielSpieler implements Serializable {
+// implements Serializable entfernt
+public class SpielSpieler {
 
     @EmbeddedId
     protected SpielSpielerPK spielSpielerPK;
@@ -168,8 +168,8 @@ public class SpielSpieler implements Serializable {
                 .add("spielerId", getSpielSpielerPK().getSpielerId())
                 .add("spielId", getSpielSpielerPK().getSpielId())
                 .add("punkte", getPunkte())
-                .add("geworfeneFreiwuerfe", getGeworfeneFreiwuerfe())
                 .add("getroffeneFreiwuerfe", getGetroffeneFreiwuerfe())
+                .add("geworfeneFreiwuerfe", getGeworfeneFreiwuerfe())
                 .add("dreiPunkteTreffer", getDreiPunkteTreffer())
                 .add("fouls", getFouls())
                 .add("spiel",spielObject)

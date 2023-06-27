@@ -2,6 +2,7 @@ package de.fhswf.statistics.api.parser;
 
 import de.fhswf.statistics.model.Spiel;
 import de.fhswf.statistics.model.SpielSpieler;
+import de.fhswf.statistics.model.Spieldetails;
 import de.fhswf.statistics.util.DateConverter;
 import jakarta.json.JsonArray;
 import jakarta.json.JsonException;
@@ -10,12 +11,14 @@ import jakarta.validation.constraints.NotNull;
 
 import java.text.ParseException;
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
  * Parser für ein einzelnes Spiel.
  *
  * @see StatParser Stats werden mit einem anderen Parser verarbeitet.
+ * @see DetailsParser Spieldetails werden mit einem anderen Parser verarbeitet
  */
 public class SpielParser implements ResponseParser<Spiel> {
 
@@ -35,20 +38,25 @@ public class SpielParser implements ResponseParser<Spiel> {
         spiel.setName(data.getString("name"));
         spiel.setGegnerPunkte(data.getInt("gegnerPunkte"));
         spiel.setUnserePunkte(data.getInt("unserePunkte"));
-        spiel.setErstesViertelTeam(data.getInt("erstesViertelTeam"));
-        spiel.setZweitesViertelTeam(data.getInt("zweitesViertelTeam"));
-        spiel.setDrittesViertelTeam(data.getInt("drittesViertelTeam"));
-        spiel.setViertesViertelTeam(data.getInt("viertesViertelTeam"));
-        spiel.setErstesViertelGegner(data.getInt("erstesViertelGegner"));
-        spiel.setZweitesViertelGegner(data.getInt("zweitesViertelGegner"));
-        spiel.setDrittesViertelGegner(data.getInt("drittesViertelGegner"));
-        spiel.setViertesViertelGegner(data.getInt("viertesViertelGegner"));
+        try {
+            JsonArray arrayViertel = data.getJsonArray("viertel");
+            Set<Spieldetails> details = new LinkedHashSet<>();
+
+            DetailsParser detailsParser = new DetailsParser();
+            for (int i = 0; i < arrayViertel.size(); i++) {
+                details.add(detailsParser.parse(arrayViertel.getJsonObject(i)));
+                System.out.println(arrayViertel.getJsonObject(i));
+            }
+            spiel.setSpieldetails(details);
+            } catch (JsonException e) {
+            throw new ParsingException("Unable to read Spieldetails.", e);
+        }
 
 
         try {
             JsonArray array = data.getJsonArray("stats");
 
-            ArrayList<SpielSpieler> stats = new ArrayList<>();
+            Set<SpielSpieler> stats = new LinkedHashSet<>();
             StatParser parser = new StatParser();
 
             for (int i = 0; i < array.size(); i++) {

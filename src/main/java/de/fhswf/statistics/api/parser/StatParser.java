@@ -11,12 +11,11 @@ public class StatParser implements ResponseParser<SpielSpieler> {
     @Override
     public SpielSpieler parse(JsonObject data) throws ParsingException {
         try {
-            //TODO Richtiger nutzen von getInt ? | Wie mit PK ID umgehen ?
             SpielSpielerPK spielSpielerPK = new SpielSpielerPK(data.getInt("spielerId"), data.getInt("spielId"));
             SpielSpieler stat = new SpielSpieler(spielSpielerPK);
             stat.setPunkte(data.getInt("punkte"));
-            stat.setGeworfeneFreiwuerfe(data.getInt("geworfeneFreiwuerfe"));
             stat.setGetroffeneFreiwuerfe(data.getInt("getroffeneFreiwuerfe"));
+            stat.setGeworfeneFreiwuerfe(data.getInt("geworfeneFreiwuerfe"));
             stat.setDreiPunkteTreffer(data.getInt("dreiPunkteTreffer"));
             stat.setFouls(data.getInt("fouls"));
 

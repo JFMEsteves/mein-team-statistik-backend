@@ -40,9 +40,7 @@ public class SpielerService {
         TypedQuery<Spieler> query = em.createQuery(criteriaQuery);
 
         List<Spieler> resultList = query.getResultList();
-        resultList.stream().forEach(s -> {
-            em.refresh(s);
-        });
+        resultList.stream().forEach(s -> em.refresh(s));
 
 
         return resultList;

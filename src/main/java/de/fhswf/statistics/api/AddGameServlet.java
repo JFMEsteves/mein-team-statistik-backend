@@ -34,7 +34,6 @@ public class AddGameServlet extends HttpServlet {
             JsonObject params = Json.createReader(req.getReader()).readObject();
 
             //Parse Spiel
-            System.out.println("Start des Parsings");
             Spiel spiel = new SpielParser().parse(params.getJsonObject("spiel"));
 
 

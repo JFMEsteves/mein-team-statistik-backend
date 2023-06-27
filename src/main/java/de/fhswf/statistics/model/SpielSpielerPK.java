@@ -2,6 +2,7 @@ package de.fhswf.statistics.model;
 
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -9,11 +10,12 @@ import java.util.Objects;
 @Embeddable
 public class SpielSpielerPK implements Serializable {
 
-    @Column(name = "spielerId")
+    @NotNull
+    @Column(name = "spielerId",nullable = false)
     private int spielerId;
 
-
-    @Column(name = "spielId")
+    @NotNull
+    @Column(name = "spielId",nullable = false)
     private int spielId;
 
     public SpielSpielerPK(int spielerId, int spielId) {

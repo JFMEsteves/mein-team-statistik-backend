@@ -7,8 +7,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedHashSet;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Entity
@@ -25,7 +25,7 @@ public class Spieler implements Serializable {
     private String name;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "spieler", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<SpielSpieler> stats = new ArrayList<>();
+    private Set<SpielSpieler> stats = new LinkedHashSet<>();
 
     public Spieler(int id, String name) {
         this.id = id;
@@ -53,22 +53,23 @@ public class Spieler implements Serializable {
     }
 
 
-    public List<SpielSpieler> getStats() {
-        if (this.stats == null) this.stats = new ArrayList<>();
+    public Set<SpielSpieler> getStats() {
+        if (this.stats == null) this.stats = new LinkedHashSet<>();
         return stats;
     }
 
-    public void setStats(List<SpielSpieler> stats) {
+    public void setStats(Set<SpielSpieler> stats) {
         this.stats = stats;
     }
 
-
+    /**
+     *
+     * @param stat, dank Set ist es nicht nötig bspw. ein stats.contains if zu setzen.
+     */
     public Spieler addStats(SpielSpieler stat) {
         if (this.stats == null)
-            this.stats = new ArrayList<>();
-        if (!stats.contains(stat))
-            stats.add(stat);
-
+            this.stats = new LinkedHashSet<>();
+        stats.add(stat);
         return this;
     }
 
@@ -76,7 +77,7 @@ public class Spieler implements Serializable {
         JsonArrayBuilder statsArray = Json.createArrayBuilder();
         if (getStats() != null && includeStats) {
             getStats().stream()
-                    .collect(Collectors.toList())
+                    .collect(Collectors.toSet())
                     .forEach(q -> statsArray.add(q.toJson(true,false)));
         }
         return Json.createObjectBuilder()

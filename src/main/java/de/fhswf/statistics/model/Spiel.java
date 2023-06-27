@@ -11,8 +11,8 @@ import jakarta.validation.constraints.NotNull;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedHashSet;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Entity
@@ -36,48 +36,12 @@ public class Spiel implements Serializable {
     @Column(name = "GegnerPunkte")
     private int gegnerPunkte;
 
-    //Viertel Punkte eigenes Team
-    @Min(value = 0)
-    @Max(value = 50)
-    @Column(name = "ErstesViertelTeam")
-    private int erstesViertelTeam;
-    @Min(value = 0)
-    @Max(value = 50)
-    @Column(name = "ZweitesViertelTeam")
-    private int zweitesViertelTeam;
-    @Min(value = 0)
-    @Max(value = 50)
-    @Column(name = "DrittesViertelTeam")
-    private int drittesViertelTeam;
-
-    @Min(value = 0)
-    @Max(value = 50)
-    @Column(name = "ViertesViertelTeam")
-    private int viertesViertelTeam;
-
-    //Viertel Punkte Gegner
-    @Min(value = 0)
-    @Max(value = 50)
-    @Column(name = "ErstesViertelGegner")
-    private int erstesViertelGegner;
-
-
-    @Min(value = 0)
-    @Max(value = 50)
-    @Column(name = "ZweitesViertelGegner")
-    private int zweitesViertelGegner;
-    @Min(value = 0)
-    @Max(value = 50)
-    @Column(name = "DrittesViertelGegner")
-    private int drittesViertelGegner;
-    @Min(value = 0)
-    @Max(value = 50)
-    @Column(name = "ViertesViertelGegner")
-    private int viertesViertelGegner;
+    @OneToMany(fetch = FetchType.EAGER,mappedBy = "spiel",cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Spieldetails> spieldetails = new LinkedHashSet<>();
 
 
     @OneToMany(mappedBy = "spiel", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<SpielSpieler> stats = new ArrayList<>();
+    private Set<SpielSpieler> stats = new LinkedHashSet<>();
 
     public Spiel(int id, LocalDate datum) {
         this.id = id;
@@ -128,86 +92,28 @@ public class Spiel implements Serializable {
         this.unserePunkte = unserePunkte;
     }
 
-    public int getErstesViertelTeam() {
-        return erstesViertelTeam;
+    public Set<Spieldetails> getSpieldetails() {
+        return spieldetails;
     }
 
-    public void setErstesViertelTeam(int erstesViertelTeam) {
-        this.erstesViertelTeam = erstesViertelTeam;
+    public void setSpieldetails(Set<Spieldetails> spieldetails) {
+        this.spieldetails = spieldetails;
     }
 
-    public int getZweitesViertelTeam() {
-        return zweitesViertelTeam;
-    }
-
-    public void setZweitesViertelTeam(int zweitesViertelTeam) {
-        this.zweitesViertelTeam = zweitesViertelTeam;
-    }
-
-    public int getDrittesViertelTeam() {
-        return drittesViertelTeam;
-    }
-
-    public void setDrittesViertelTeam(int drittesViertelTeam) {
-        this.drittesViertelTeam = drittesViertelTeam;
-    }
-
-    public int getViertesViertelTeam() {
-        return viertesViertelTeam;
-    }
-
-    public void setViertesViertelTeam(int viertesViertelTeam) {
-        this.viertesViertelTeam = viertesViertelTeam;
-    }
-
-    public int getErstesViertelGegner() {
-        return erstesViertelGegner;
-    }
-
-    public void setErstesViertelGegner(int erstesViertelGegner) {
-        this.erstesViertelGegner = erstesViertelGegner;
-    }
-
-    public int getZweitesViertelGegner() {
-        return zweitesViertelGegner;
-    }
-
-    public void setZweitesViertelGegner(int zweitesViertelGegner) {
-        this.zweitesViertelGegner = zweitesViertelGegner;
-    }
-
-    public int getDrittesViertelGegner() {
-        return drittesViertelGegner;
-    }
-
-    public void setDrittesViertelGegner(int drittesViertelGegner) {
-        this.drittesViertelGegner = drittesViertelGegner;
-    }
-
-    public int getViertesViertelGegner() {
-        return viertesViertelGegner;
-    }
-
-    public void setViertesViertelGegner(int viertesViertelGegner) {
-        this.viertesViertelGegner = viertesViertelGegner;
-    }
-
-
-    public List<SpielSpieler> getStats() {
-        if (this.stats == null) this.stats = new ArrayList<>();
+    public Set<SpielSpieler> getStats() {
+        if (this.stats == null) this.stats = new LinkedHashSet<>();
         return stats;
     }
 
 
-    public void setStats(List<SpielSpieler> stats) {
+    public void setStats(Set<SpielSpieler> stats) {
         this.stats = stats;
     }
 
     public Spiel addStats(SpielSpieler stat) {
         if (this.stats == null)
-            this.stats = new ArrayList<>();
-        if (!stats.contains(stat))
-            stats.add(stat);
+            this.stats = new LinkedHashSet<>();
+        stats.add(stat);
         return this;
     }
 
@@ -215,8 +121,13 @@ public class Spiel implements Serializable {
         JsonArrayBuilder statsArray = Json.createArrayBuilder();
         if (getStats() != null && includeStats) {
             getStats().stream()
-                    .collect(Collectors.toList())
+                    .collect(Collectors.toSet())
                     .forEach(q -> statsArray.add(q.toJson(false, true)));
+        }
+        JsonArrayBuilder HeimViertel = Json.createArrayBuilder();
+        if(getSpieldetails() != null){
+            getSpieldetails().stream().collect(Collectors.toSet())
+                    .forEach(q -> HeimViertel.add(q.toJson(true)));
         }
         //Aussehen der JSON Datei
         return Json.createObjectBuilder()
@@ -225,14 +136,7 @@ public class Spiel implements Serializable {
                 .add("datum", DateConverter.DateToString(getDatum()))
                 .add("unserePunkte", getUnserePunkte())
                 .add("gegnerPunkte", getGegnerPunkte())
-                .add("erstesViertelTeam", getErstesViertelTeam())
-                .add("zweitesViertelTeam", getZweitesViertelTeam())
-                .add("drittesViertelTeam", getDrittesViertelTeam())
-                .add("viertesViertelTeam", getViertesViertelTeam())
-                .add("erstesViertelGegner",getErstesViertelGegner())
-                .add("zweitesViertelGegner",getZweitesViertelGegner())
-                .add("drittesViertelGegner",getDrittesViertelGegner())
-                .add("viertesViertelGegner",getViertesViertelGegner())
+                .add("viertel",HeimViertel)
                 .add("stats", statsArray)
                 .build();
     }
